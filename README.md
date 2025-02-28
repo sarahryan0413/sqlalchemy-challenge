@@ -1,96 +1,33 @@
 ---
-title: "Module 10 Challenge"
+# Module 10 Challenge
 ---
+For this challenge, I am completing a climate analysis for an upcoming trip to Honolulu, Hawaii.
 
-<div id="bootcamp"><img style="display: none;" src="https://static.bc-edx.com/data/dl-1-2/m10/lms/img/banner.jpg" alt="lesson banner" />
+## Part 1: Analyze and Explore the Climate Data
 
-### Before You Begin
+In this section, I used Python and SQLAlchemy to do a basic climate analysis and explore my climate database. One of the new things I worked with was SQLAlchemy ORM queries, along with tools like automap, which detects tables in a database, and create_engine, which connects to a SQLite database. I also used func to apply aggregate functions like min, max, and average.
 
-1. Create a new repository for this project called `sqlalchemy-challenge`. **Do not add this assignment to an existing repository**.
+Overall, I still feel a bit shaky with SQL and SQLAlchemy, but I felt most comfortable working with libraries I’m more familiar with, like Pandas and Matplotlib.
 
-2. Clone the new repository to your computer.
+### Precipitation Analysis
 
-3. Inside your local Git repository, create a directory for this Challenge. Use a folder name that corresponds to the Challenge, such as `SurfsUp`.
+The most recent data in this dataset is from August 23, 2017. Looking at precipitation over the past year from that date, I noticed a distinct pattern. The bar graph I created shows highs and lows scattered randomly, which initially led me to believe that encountering precipitation on my trip would be likely.
 
-4. Add your Jupyter notebook and `app.py` to this folder. They’ll contain the main scripts to run for analysis. Also add the `Resources` folder, which contains the data files you will be using for this challenge.
+However, after analyzing the statistical data, I saw a different story. The mean precipitation is 0.178 inches, suggesting that most rainfall is significantly less than an inch, often closer to zero. The min (0), 25% (0), and 50% (0.02) indicate that at least half the days had little to no precipitation. Even at the 75th percentile (0.13 inches), rainfall remains relatively low.
 
-5. Push the changes to GitHub or GitLab.
+The maximum precipitation recorded was 6.7 inches, meaning there were occasional extreme rainfall events. These high values likely skewed the data and may have made the bar graph appear more rain-heavy than it actually was. The standard deviation (0.46), which is quite large compared to the mean, reinforces this variability—some days had significantly more rain than others, while many remained dry.
 
-### Files
+Initially, the graph made it seem like rain was frequent, but after breaking down the numbers, it's clear that rainfall is sporadic, with most days being dry or experiencing minimal precipitation.
 
-Download the following files to help you get started:
+### Station Analysis
 
-[Module 10 Challenge files](https://static.bc-edx.com/data/dl-1-2/m10/lms/starter/Starter_Code.zip)
+For the station analysis, I started by identifying nine stations in the dataset. I then created a query to organize them by station ID and count how active they are in the database. From there, I focused on the most active station, Waihee, and calculated its lowest, highest, and average temperatures.
 
-### Instructions
+To my delight, the maximum recorded temperature at Waihee was 85°F, while the lowest was 51°F. Coming from Minnesota in the winter, that sounds pretty amazing! Looking at the histogram, I noticed that the most frequently recorded temperature is around 76°F—not bad at all.
 
-Congratulations! You've decided to treat yourself to a long holiday vacation in Honolulu, Hawaii. To help with your trip planning, you decide to do a climate analysis about the area. The following sections outline the steps that you need to take to accomplish this task.
+What I’m really curious about now is how temperatures fluctuate throughout the year. Are there times when they dip into the 60s versus staying in the 80s? Does Waihee experience seasonal temperature changes, and if so, what does that pattern look like? That’s something I’d love to explore further.
 
-#### Part 1: Analyze and Explore the Climate Data
-
-In this section, you’ll use Python and SQLAlchemy to do a basic climate analysis and data exploration of your climate database. Specifically, you’ll use SQLAlchemy ORM queries, Pandas, and Matplotlib. To do so, complete the following steps:
-
-1. Note that you’ll use the provided files (`climate_starter.ipynb` and `hawaii.sqlite`) to complete your climate analysis and data exploration.
-
-2. Use the SQLAlchemy `create_engine()` function to connect to your SQLite database.
-
-3. Use the SQLAlchemy `automap_base()` function to reflect your tables into classes, and then save references to the classes named `station` and `measurement`.
-
-4. Link Python to the database by creating a SQLAlchemy session.
-
-    > **Important** Remember to close your session at the end of your notebook.
-
-5. Perform a precipitation analysis and then a station analysis by completing the steps in the following two subsections.
-
-##### Precipitation Analysis
-
-1. Find the most recent date in the dataset.
-
-2. Using that date, get the previous 12 months of precipitation data by querying the previous 12 months of data.
-
-    > **Hint** Don’t pass the date as a variable to your query.
-
-3. Select only the "date" and "prcp" values.
-
-4. Load the query results into a Pandas DataFrame. Explicitly set the column names.
-
-5. Sort the DataFrame values by "date".
-
-6. Plot the results by using the DataFrame `plot` method, as the following image shows:
-
-    ![A screenshot depicts the plot.](https://static.bc-edx.com/data/dl-1-2/m10/lms/img/precipitation.jpg)
-
-7. Use Pandas to print the summary statistics for the precipitation data.
-
-##### Station Analysis
-
-1. Design a query to calculate the total number of stations in the dataset.
-
-2. Design a query to find the most-active stations (that is, the stations that have the most rows). To do so, complete the following steps:
-
-    * List the stations and observation counts in descending order.
-
-    > **Hint** You’ll need to use the `func.count` function in your query.
-
-    * Answer the following question: which station id has the greatest number of observations?
-
-3. Design a query that calculates the lowest, highest, and average temperatures that filters on the most-active station id found in the previous query.
-
-    > **Hint** You’ll need to use functions such as `func.min`, `func.max`, and `func.avg` in your query.
-
-4. Design a query to get the previous 12 months of temperature observation (TOBS) data. To do so, complete the following steps:
-
-    * Filter by the station that has the greatest number of observations.
-
-    * Query the previous 12 months of TOBS data for that station.
-
-    * Plot the results as a histogram with `bins=12`, as the following image shows:
-
-      ![A screenshot depicts the histogram.](https://static.bc-edx.com/data/dl-1-2/m10/lms/img/station-histogram.jpg)
-
-5. Close your session.
-
-#### Part 2: Design Your Climate App
+## Part 2: Design Your Climate App
 
 Now that you’ve completed your initial analysis, you’ll design a Flask API based on the queries that you just developed. To do so, use Flask to create your routes as follows:
 
