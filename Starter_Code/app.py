@@ -49,14 +49,15 @@ def welcome():      #function name: welcome
         f"/api/v1.0/precipitation<br/>"
         f"/api/v1.0/stations<br/>"
         f"/api/v1.0/tobs<br/>"
-        f"/api/v1.0/start_date<br/>"
-        f"/api/v1.0/start_date/end_date"
+        f"/api/v1.0/start<br/>"
+        f"/api/v1.0/start/end"
     )
+session.close()
 
 
 # Create a precipitation route
 @app.route("/api/v1.0/precipitation")
-def percipitation():
+def precipitation():
     """Retrieve the last 12 months of precipitation data"""
     # Calculate the date one year from the last date in data set.
     year_ago = dt.date(2017, 8, 23) - dt.timedelta(days=365)
@@ -102,8 +103,8 @@ def tobs():
 
 
 # Create a route for min, max, and avg temps before a specified start or start-end range
-@app.route("/api/v1.0/start_date")
-@app.route("/api/v1.0/start_date/end_date")
+@app.route("/api/v1.0/<start>")
+@app.route("/api/v1.0/<start>/<end>")
 def temp_stats(start, end=None):     #start is mandatory, end=None means its not required
     """Return temperature min, max, and avg"""
     
@@ -111,7 +112,7 @@ def temp_stats(start, end=None):     #start is mandatory, end=None means its not
     sel = [func.min(Measurement.tobs), func.max(Measurement.tobs), func.avg(Measurement.tobs)]
 
     if not end: 
-        start = dt.datetime.strptime(start, "%m-%d-%y")    #converts start time string to a datetime object
+        start = dt.datetime.strptime(start, "%m%d%Y")    #converts start time string to a datetime object
         
         #calculate temp min, max, and avg for dates greater than start
         results = session.query(*sel).filter(Measurement.date>=start).all()
@@ -122,8 +123,8 @@ def temp_stats(start, end=None):     #start is mandatory, end=None means its not
         return jsonify(temps)
 
     #calculate temp min,max, and avg with start and stop
-    start = dt.datetime.strptime(start, "%m-%d-%y")
-    end = dt.datetime.strptime(end, "%m-%d-%y")
+    start = dt.datetime.strptime(start, "%m%d%Y")
+    end = dt.datetime.strptime(end, "%m%d%Y")
 
     results = session.query(*sel).filter(Measurement.date>=start)\
                                  .filter(Measurement.date<=end).all()
